@@ -660,9 +660,30 @@
         let currentCompanyId = null;
         let currentViewMode = 'list';
 
+        // Pre-loaded Fortune 1000 companies data
+        const fortuneCompaniesData = [{"name": "Amazon", "url": "https://www.amazon.jobs/en/"}, {"name": "Walmart", "url": "https://careers.walmart.com/"}, {"name": "UnitedHealth Group", "url": "https://careers.unitedhealthgroup.com/"}, {"name": "Apple", "url": "https://www.apple.com/careers/"}, {"name": "McKesson", "url": "https://careers.mckesson.com/"}, {"name": "Alphabet", "url": "https://careers.google.com/"}, {"name": "CVS Health", "url": "https://jobs.cvshealth.com/"}, {"name": "Berkshire Hathaway", "url": "https://www.berkshirehathaway.com/careers.html"}, {"name": "Exxon Mobil", "url": "https://www.exxonmobil.com/en/career/"}, {"name": "Cencora", "url": "https://www.cencora.com/careers/"}, {"name": "Microsoft", "url": "https://careers.microsoft.com/"}, {"name": "Costco", "url": "https://www.costco.com/careers"}, {"name": "Cigna", "url": "https://careers.cigna.com/"}, {"name": "Cardinal Health", "url": "https://www.cardinalhealth.com/en/careers.html"}, {"name": "Nvidia", "url": "https://www.nvidia.com/en-us/about-nvidia/careers/"}, {"name": "Meta", "url": "https://www.metacareers.com/"}, {"name": "Elevance Health", "url": "https://careers.elevancehealth.com/"}, {"name": "Centene", "url": "https://careers.centene.com/"}, {"name": "Chevron", "url": "https://jobs.chevron.com/"}, {"name": "Ford Motor", "url": "https://www.ford.com/careers/"}, {"name": "General Motors", "url": "https://www.gm.com/careers"}, {"name": "JPMorgan Chase", "url": "https://www.jpmorganchase.com/careers"}, {"name": "Home Depot", "url": "https://careers.homedepot.com/"}, {"name": "Fannie Mae", "url": "https://careers.fanniemae.com/"}, {"name": "Walgreens", "url": "https://www.walgreens.com/careers"}, {"name": "Kroger", "url": "https://www.kroger.com/careers"}, {"name": "Verizon", "url": "https://www.verizon.com/careers/"}, {"name": "Marathon Petroleum", "url": "https://careers.marathonpetroleum.com/"}, {"name": "StoneX", "url": "https://careers.stonex.com/"}, {"name": "Phillips 66", "url": "https://careers.phillips66.com/"}, {"name": "Humana", "url": "https://careers.humana.com/"}, {"name": "AT&T", "url": "https://www.att.com/careers/"}, {"name": "Comcast", "url": "https://jobs.comcast.com/"}, {"name": "State Farm", "url": "https://careers.statefarm.com/"}, {"name": "Valero Energy", "url": "https://careers.valero.com/"}, {"name": "Freddie Mac", "url": "https://careers.freddiemac.com/"}, {"name": "Dell Technologies", "url": "https://www.dell.com/en-us/careers"}, {"name": "Bank of America", "url": "https://careers.bofa.com/"}, {"name": "Bank of New York Mellon", "url": "https://www.bnymellon.com/en/us/careers/"}, {"name": "Target", "url": "https://www.target.com/careers"}, {"name": "Tesla", "url": "https://www.tesla.com/careers"}, {"name": "Walt Disney", "url": "https://jobs.disneycareers.com/"}, {"name": "Johnson & Johnson", "url": "https://www.jnj.com/careers"}, {"name": "PepsiCo", "url": "https://www.pepsico.com/careers"}, {"name": "Boeing", "url": "https://www.boeing.com/careers/"}, {"name": "UPS", "url": "https://www.ups.com/upscareers"}, {"name": "RTX", "url": "https://www.rtx.com/careers"}, {"name": "FedEx", "url": "https://careers.fedex.com/"}, {"name": "Progressive", "url": "https://jobs.progressive.com/"}, {"name": "Lowe's", "url": "https://careers.lowes.com/"}];
+
         // Initialize
         function init() {
             loadFromStorage();
+            // If first time (no data), load fortune companies
+            if (companies.length === 0) {
+                companies = fortuneCompaniesData.map(comp => ({
+                    id: Date.now().toString() + Math.random(),
+                    name: comp.name,
+                    url: comp.url,
+                    applied: false,
+                    positions: [],
+                    notes: {
+                        lookingFor: '',
+                        recruiterInfo: '',
+                        peopleInfo: '',
+                        personalNotes: '',
+                        files: []
+                    }
+                }));
+                saveToStorage();
+            }
             const isLoggedIn = sessionStorage.getItem('loggedIn');
             if (isLoggedIn) {
                 showApp();
