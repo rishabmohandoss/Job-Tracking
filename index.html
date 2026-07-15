@@ -992,15 +992,25 @@
         }
 
         // Storage
+        const DATA_VERSION = 2; // Increment when updating companies list
+
         function loadFromStorage() {
             const stored = localStorage.getItem('careerTrackerData');
-            if (stored) {
+            const storedVersion = localStorage.getItem('dataVersion');
+
+            // If data version is outdated or missing, load fresh fortune companies
+            if (!storedVersion || parseInt(storedVersion) < DATA_VERSION) {
+                companies = [];
+                saveToStorage();
+                localStorage.setItem('dataVersion', DATA_VERSION.toString());
+            } else if (stored) {
                 companies = JSON.parse(stored);
             }
         }
 
         function saveToStorage() {
             localStorage.setItem('careerTrackerData', JSON.stringify(companies));
+            localStorage.setItem('dataVersion', DATA_VERSION.toString());
         }
 
         function exportData() {
